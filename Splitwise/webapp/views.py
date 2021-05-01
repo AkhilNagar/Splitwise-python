@@ -196,10 +196,11 @@ def history(request):
     if Transaction_Pairs.objects.filter(person1=person_n,person2=request.user.get_username()).count()==0:
         famt1=Transaction_Pairs.objects.get(person1=request.user.get_username(),person2=person_n,)
         flag=True
-    else:
+    elif Transaction_Pairs.objects.filter(person1=request.user.get_username(),person2=person_n).count()==0:
         famt1=Transaction_Pairs.objects.get(person1=person_n,person2=request.user.get_username())
         flag=False
-
+    else:
+        return HttpResponse("Could not find Person")
     #famt1=(Transaction_Pairs.objects.get(person1=request.user.get_username(),person2=person_n,) and flag=1)
     if flag==True:
         famt=float(famt1.amount)
@@ -224,7 +225,6 @@ def nullify(request):
 '''
 
 def settle(request):
-    def settle(request):
     if request.method=='GET':
         c1=Transaction_Pairs.objects.filter(person1=request.user.get_username()).count()
         c2=Transaction_Pairs.objects.filter(person2=request.user.get_username()).count()
